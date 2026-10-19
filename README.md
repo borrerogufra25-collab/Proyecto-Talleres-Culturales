@@ -1,2 +1,5 @@
-# Proyecto-Talleres-Culturales
-Proyecto de 2º DAM de una API REST con Spring Boot
+# Talleres Culturales API
+
+## Tecnologías
+
+Java 25, Spring Boot 4.1.1, Spring Data JPA, H2, Validation, Lombok, springdoc-openapi
