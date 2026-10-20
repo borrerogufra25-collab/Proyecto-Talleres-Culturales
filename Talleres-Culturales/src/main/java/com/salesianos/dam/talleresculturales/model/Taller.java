@@ -1,8 +1,8 @@
 package com.salesianos.dam.talleresculturales.model;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +35,7 @@ public class Taller {
     private LocalDateTime fechaHoraFin;
 
     @ManyToOne
-    @JoinColumn(name = "organizador_id")
+    @JoinColumn(name = "organizador_id", nullable = false)
     private Organizador organizador;
 
     @ManyToMany
@@ -45,6 +45,6 @@ public class Taller {
             inverseJoinColumns = @JoinColumn(name = "participante_id")
     )
     @Builder.Default
-    private Set<Participante> participantes = new HashSet<>();
+    private List<Participante> participantes = new ArrayList<>();
 
 }
