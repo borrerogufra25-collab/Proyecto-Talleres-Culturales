@@ -2,9 +2,7 @@ package com.salesianos.dam.talleresculturales.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,27 +24,27 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Taller {
 
-  @Id
-  @GeneratedValue
-  private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-  @Column(nullable = false, unique = true)
-  private String titulo;
+    @Column(nullable = false, unique = true)
+    private String titulo;
 
-  private LocalDateTime fechaHoraInicio;
-  private LocalDateTime fechaHoraFin;
+    private LocalDateTime fechaHoraInicio;
+    private LocalDateTime fechaHoraFin;
 
-  @ManyToOne
-  @JoinColumn(name = "organizador_id")
-  private Organizador organizador;
+    @ManyToOne
+    @JoinColumn(name = "organizador_id", nullable = false)
+    private Organizador organizador;
 
-  @ManyToMany
-  @JoinTable(
-      name = "inscripcion",
-      joinColumns = @JoinColumn(name = "taller_id"),
-      inverseJoinColumns = @JoinColumn(name = "participante_id")
-  )
-  @Builder.Default
-  private List<Participante> participantes = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "inscripcion",
+            joinColumns = @JoinColumn(name = "taller_id"),
+            inverseJoinColumns = @JoinColumn(name = "participante_id")
+    )
+    @Builder.Default
+    private List<Participante> participantes = new ArrayList<>();
 
 }
