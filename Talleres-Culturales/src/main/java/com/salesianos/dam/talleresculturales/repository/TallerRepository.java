@@ -6,4 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TallerRepository extends JpaRepository<Taller, Long> {
 
+    boolean existsByTituloIgnoreCase(String titulo);
+
+    boolean existsByTituloIgnoreCaseAndIdNot(String titulo, Long id);
+
+
 }

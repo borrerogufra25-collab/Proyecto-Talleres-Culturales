@@ -27,4 +27,27 @@ public class GlobalExceptionHandler {
 
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, detalle);
     }
+
+    @ExceptionHandler(TallerNoEncontradoException.class)
+    public ProblemDetail handleTallerNoEncontrado(
+            TallerNoEncontradoException ex, Locale locale) {
+        String detalle = messageSource.getMessage(
+                "taller.noencontrado",
+                new Object[]{ex.getId()},
+                locale);
+
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, detalle);
+    }
+
+    @ExceptionHandler(TallerYaExisteException.class)
+    public ProblemDetail handleTallerYaExiste(
+            TallerYaExisteException ex, Locale locale) {
+        String detalle = messageSource.getMessage(
+                "taller.yaexiste",
+                new Object[]{ex.getTitulo()},
+                locale);
+
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, detalle);
+    }
+
 }
