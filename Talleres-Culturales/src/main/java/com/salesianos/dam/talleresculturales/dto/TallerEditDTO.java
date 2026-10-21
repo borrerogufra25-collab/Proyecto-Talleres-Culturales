@@ -29,7 +29,7 @@ public record TallerEditDTO(
 
     public Taller to(Organizador organizador) {
         return Taller.builder()
-                .titulo(titulo)
+                .titulo(titulo.trim())
                 .fechaHoraInicio(fechaHoraInicio)
                 .fechaHoraFin(fechaHoraFin)
                 .organizador(organizador)

@@ -32,12 +32,12 @@ public class OrganizadorService {
         return organizadorRepository.save(organizador);
     }
 
-    public Organizador updateOrganizador(Long id, Organizador datos) {
+    public Organizador updateOrganizador(Long id, Organizador organizador) {
 
         Organizador existente = getOrganizadorById(id);
 
-        existente.setNombre(datos.getNombre());
-        existente.setEmail(datos.getEmail());
+        existente.setNombre(organizador.getNombre());
+        existente.setEmail(organizador.getEmail());
 
         return organizadorRepository.save(existente);
     }
