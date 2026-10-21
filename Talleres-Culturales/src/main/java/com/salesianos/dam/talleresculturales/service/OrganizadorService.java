@@ -1,46 +1,52 @@
 package com.salesianos.dam.talleresculturales.service;
 
-import com.salesianos.dam.talleresculturales.dto.OrganizadorEditDTO;
+import com.salesianos.dam.talleresculturales.exception.OrganizadorNoEncontradoException;
 import com.salesianos.dam.talleresculturales.model.Organizador;
 import com.salesianos.dam.talleresculturales.repository.OrganizadorRepository;
+
 import java.util.List;
-import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
+
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class OrganizadorService {
 
-  private OrganizadorRepository organizadorRepository;
+    private final OrganizadorRepository organizadorRepository;
 
-  public List<Organizador> getAllOrganizadores() {
+    public List<Organizador> getAllOrganizadores() {
 
-    List<Organizador> resultado = organizadorRepository.findAll();
-
-    if (resultado.isEmpty()) {
-      return null;
+        return organizadorRepository.findAll();
     }
-    return resultado;
-  }
 
-  public Optional<Organizador> getOrganizadorById(Long id) {
+    public Organizador getOrganizadorById(Long id) {
 
-    return organizadorRepository.findById(id);
-  }
+        return organizadorRepository.findById(id)
+                .orElseThrow(() -> new OrganizadorNoEncontradoException(id));
+    }
 
-  public Organizador addOrganizador(Organizador organizador) {
+    public Organizador addOrganizador(Organizador organizador) {
 
-    return organizadorRepository.save(organizador);
-  }
+        return organizadorRepository.save(organizador);
+    }
 
-  /*public Organizador updateOrganizador(Long id, Organizador organizador){
-    return
-  }*/
+    public Organizador updateOrganizador(Long id, Organizador datos) {
 
-  public void deleteOrganizador(Long id) {
-    organizadorRepository.deleteById(id);
-  }
+        Organizador existente = getOrganizadorById(id);
+
+        existente.setNombre(datos.getNombre());
+        existente.setEmail(datos.getEmail());
+
+        return organizadorRepository.save(existente);
+    }
+
+    public void deleteOrganizador(Long id) {
+
+        Organizador existente = getOrganizadorById(id);
+
+        organizadorRepository.delete(existente);
+    }
 
 }
