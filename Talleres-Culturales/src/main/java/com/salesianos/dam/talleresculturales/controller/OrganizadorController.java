@@ -74,7 +74,8 @@ public class OrganizadorController {
 
         Organizador actualizado = organizadorService.updateOrganizador(id, dto.to());
 
-        return ResponseEntity.ok(OrganizadorSimpleDTO.of(actualizado));
+        return ResponseEntity.ok(
+            OrganizadorSimpleDTO.of(actualizado));
     }
 
     @DeleteMapping("/{id}")
