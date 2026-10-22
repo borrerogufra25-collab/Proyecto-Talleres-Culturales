@@ -83,6 +83,15 @@ public class TallerService {
 
     }
 
+    public void desinscribirParticipante(Long tallerId, Long participanteId) {
+        Taller taller = getTallerById(tallerId);
+        Participante participante = participanteService.getParticipanteById(participanteId);
+
+        taller.getParticipantes().remove(participante);
+
+        tallerRepository.save(taller);
+    }
+
 }
 
 
