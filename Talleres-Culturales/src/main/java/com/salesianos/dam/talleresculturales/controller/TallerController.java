@@ -82,4 +82,15 @@ public class TallerController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{tallerId}/participantes/{participanteId}")
+    public ResponseEntity<TallerResponseDTO> inscribirParticipante(
+            @PathVariable Long tallerId,
+            @PathVariable Long participanteId) {
+
+        Taller actualizado = tallerService.inscribirParticipante(tallerId, participanteId);
+
+        return ResponseEntity.ok(
+                TallerResponseDTO.of(actualizado));
+    }
+
 }
