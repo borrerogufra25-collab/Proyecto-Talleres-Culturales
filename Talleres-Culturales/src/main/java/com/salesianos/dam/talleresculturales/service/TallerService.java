@@ -1,9 +1,11 @@
 package com.salesianos.dam.talleresculturales.service;
 
 import com.salesianos.dam.talleresculturales.dto.TallerEditDTO;
+import com.salesianos.dam.talleresculturales.exception.ParticipanteYaInscritoException;
 import com.salesianos.dam.talleresculturales.exception.TallerNoEncontradoException;
 import com.salesianos.dam.talleresculturales.exception.TallerYaExisteException;
 import com.salesianos.dam.talleresculturales.model.Organizador;
+import com.salesianos.dam.talleresculturales.model.Participante;
 import com.salesianos.dam.talleresculturales.model.Taller;
 import com.salesianos.dam.talleresculturales.repository.TallerRepository;
 
@@ -19,6 +21,7 @@ public class TallerService {
 
     private final TallerRepository tallerRepository;
     private final OrganizadorService organizadorService;
+    private final ParticipanteService participanteService;
 
     public List<Taller> getAllTalleres() {
         return tallerRepository.findAll();
@@ -63,6 +66,21 @@ public class TallerService {
         Taller existente = getTallerById(id);
 
         tallerRepository.delete(existente);
+    }
+
+    public Taller inscribirParticipante(Long tallerId, Long participanteId) {
+
+        Taller taller = getTallerById(tallerId);
+        Participante participante = participanteService.getParticipanteById(participanteId);
+
+        if (taller.getParticipantes().contains(participante)) {
+            throw new ParticipanteYaInscritoException(participante.getNombreCompleto(), taller.getTitulo());
+        }
+
+        taller.getParticipantes().add(participante);
+
+        return tallerRepository.save(taller);
+
     }
 
 }
