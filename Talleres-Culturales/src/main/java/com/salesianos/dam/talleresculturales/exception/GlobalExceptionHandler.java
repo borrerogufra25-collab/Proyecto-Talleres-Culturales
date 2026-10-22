@@ -9,6 +9,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.validation.FieldError;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -119,6 +121,30 @@ public class GlobalExceptionHandler {
                 locale);
 
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detalle);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ProblemDetail handleTipoInvalido(
+            MethodArgumentTypeMismatchException ex, Locale locale) {
+
+        String detalle = messageSource.getMessage(
+                "tipo.invalido",
+                new Object[]{ex.getName(), String.valueOf(ex.getValue())},
+                locale);
+
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detalle);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ProblemDetail handleConflictoIntegridad(
+            DataIntegrityViolationException ex, Locale locale) {
+
+        String detalle = messageSource.getMessage(
+                "operacion.conflicto",
+                null,
+                locale);
+
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, detalle);
     }
 
 }
