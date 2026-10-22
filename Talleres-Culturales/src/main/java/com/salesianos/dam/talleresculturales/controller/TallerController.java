@@ -1,5 +1,6 @@
 package com.salesianos.dam.talleresculturales.controller;
 
+import com.salesianos.dam.talleresculturales.dto.ParticipanteSimpleDTO;
 import com.salesianos.dam.talleresculturales.dto.TallerEditDTO;
 import com.salesianos.dam.talleresculturales.dto.TallerResponseDTO;
 import com.salesianos.dam.talleresculturales.model.Taller;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api/v1/talleres")
@@ -91,6 +94,28 @@ public class TallerController {
 
         return ResponseEntity.ok(
                 TallerResponseDTO.of(actualizado));
+    }
+
+    @GetMapping("/{tallerId}/participantes")
+    public ResponseEntity<List<ParticipanteSimpleDTO>> getParticipantesDeTaller(
+            @PathVariable Long tallerId) {
+
+        Taller taller = tallerService.getTallerById(tallerId);
+
+        return ResponseEntity.ok(
+                taller.getParticipantes().stream()
+                        .map(ParticipanteSimpleDTO::of)
+                        .toList());
+    }
+
+    @DeleteMapping("/{tallerId}/participantes/{participanteId}")
+    public ResponseEntity<Void> desinscribirParticipante(
+            @PathVariable Long tallerId,
+            @PathVariable Long participanteId) {
+
+        tallerService.desinscribirParticipante(tallerId, participanteId);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
